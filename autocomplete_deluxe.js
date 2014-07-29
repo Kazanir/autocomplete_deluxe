@@ -119,7 +119,7 @@
   };
 
   Drupal.autocomplete_deluxe.Widget.prototype.init = function(settings) {
-    if ($.browser.msie && $.browser.version === "6.0") {
+    if ($.browser && $.browser.msie && $.browser.version === "6.0") {
       return;
     }
 
@@ -162,8 +162,11 @@
         }
       }
       if ($.isEmptyObject(result)) {
+        console.log(parent);
+        console.log(data);
+        console.log(term);
         result.push({
-          label: Drupal.t("The term '@term' will be added.", {'@term' : term}),
+          label: Drupal.t("No results found."),
           value: term,
           newTerm: true
         });
@@ -203,16 +206,14 @@
     });
 
     var jqObject = this.jqObject;
-    var throbber = $('<div class="autocomplete-deluxe-throbber autocomplete-deluxe-closed">&nbsp;</div>').insertAfter(jqObject);
-
+    var throbber = $('<span class="input-group-addon form-autocomplete"><i class="icon glyphicon glyphicon-refresh" aria-hidden="true"></i></span>').insertAfter(jqObject);
+    var icon = throbber.find(":first");
     this.jqObject.bind("autocompletesearch", function(event, ui) {
-      throbber.removeClass('autocomplete-deluxe-closed');
-      throbber.addClass('autocomplete-deluxe-open');
+      icon.addClass('glyphicon-spin');
     });
-
+    
     this.jqObject.bind("autocompleteopen", function(event, ui) {
-      throbber.addClass('autocomplete-deluxe-closed');
-      throbber.removeClass('autocomplete-deluxe-open');
+      icon.removeClass('glyphicon-spin');
     });
 
     // Monkey patch the _renderItem function jquery so we can highlight the
@@ -277,7 +278,8 @@
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype.acceptTerm = function(term) {
     // Accept only terms, that are not in our items list.
-    return !(term in this.items);
+    return "true";
+    // return !(term in this.items);
   };
 
   Drupal.autocomplete_deluxe.MultipleWidget.Item = function (widget, item) {
@@ -304,23 +306,19 @@
     this.element.remove();
     var values = this.widget.valueForm.val();
     var escapedValue = Drupal.autocomplete_deluxe.escapeRegex( this.item.value );
-    var regex = new RegExp('()*""' + escapedValue + '""()*', 'gi');
+    var regex = new RegExp('()*""' + escapedValue + '""|' + escapedValue + '()*', 'gi');
     this.widget.valueForm.val(values.replace(regex, ''));
     delete this.widget.items[this.value];
   };
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype.setup = function() {
     var jqObject = this.jqObject;
-    var parent = jqObject.parent();
-    var value_container = jqObject.parent().parent().children('.autocomplete-deluxe-value-container');
-    var value_input = value_container.children().children();
+    var parent = jqObject.parents('.autocomplete-deluxe-container');
+    var value_container = parent.next();
+    var value_input = value_container.find('input');
     var items = this.items;
     var self = this;
     this.valueForm = value_input;
-
-    // Override the resize function, so that the suggestion list doesn't resizes
-    // all the time.
-    jqObject.data("autocomplete")._resizeMenu = function()  {};
 
     jqObject.show();
 

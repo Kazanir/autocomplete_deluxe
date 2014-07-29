@@ -26,7 +26,6 @@ a.autocomplete-deluxe-single:hover {
 }
 
 .autocomplete-deluxe-container {
-  display: inline-block;
   position: relative;
   padding: 0;
   border: 1px solid #CCCCCC;
@@ -63,7 +62,6 @@ div.autocomplete-deluxe-container input.autocomplete-deluxe-form-single  {
 }
 
 span.autocomplete-deluxe-value-delete {
-  display: inline-block;
   float: right;
   background:url('x.gif') no-repeat center;
   width: 18px;
@@ -103,7 +101,6 @@ input.autocomplete-deluxe-closed {
 }
 
 div.autocomplete-deluxe-multiple {
-  display: inline-block;
   font-size: 13px;
   position: relative;
   background-color: #FFFFFF;
@@ -123,7 +120,6 @@ div.autocomplete-deluxe-multiple {
   padding: 5px;
   position: relative;
   line-height:15pt;
-  width: 503px;
   cursor: text;
 }
 
@@ -158,8 +154,8 @@ div.autocomplete-deluxe-throbber {
   box-shadow: 0 0 2px #FFFFFF inset, 0 1px 0 rgba(0, 0, 0, 0.05);
   color: #333333;
   cursor: default;
-  line-height: 13px;
-  margin: 3px 0 3px 5px;
+  line-height: 14px;
+  margin: 6px 0 6px 5px;
   padding: 3px 20px 3px 5px;
   position: relative;
 }
@@ -171,7 +167,7 @@ div.autocomplete-deluxe-throbber {
   height: 13px;
   position: absolute;
   right: 3px;
-  top: 3px;
+  top: 4px;
   width: 12px;
 }
 .autocomplete-deluxe-item-focus {
