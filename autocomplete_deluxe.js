@@ -397,7 +397,8 @@
       // enter key was entered, then enter the new term.
       if ((event.which == self.delimiter && (value.split('"').length - 1) != 1) || (event.which == 13 && jqObject.val() != "")) {
         value = value.substr(0, value.length);
-        if (typeof self.items[value] == 'undefined' && value != '') {
+        var valueIndex = self.items.indexOf(value);
+        if (typeof self.items[valueIndex] == 'undefined' && value != '') {
           var ui_item = {
             label: value,
             value: value
@@ -416,7 +417,8 @@
         // then mark the last item for deletion or deleted it if already marked.
         if (last_element.hasClass('autocomplete-deluxe-item-focus')) {
           var value = last_element.children('input').val();
-          self.items[value].remove(self.items[value]);
+          var valueIndex = self.items.indexOf(value);
+          self.items[valueIndex].remove(self.items[valueIndex]);
           jqObject.autocomplete('search', '');
         } else {
           last_element.addClass('autocomplete-deluxe-item-focus');
