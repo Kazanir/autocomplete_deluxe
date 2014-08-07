@@ -156,6 +156,12 @@ function autocomplete_deluxe_field_widget_settings_form($field, $instance) {
     '#default_value' => isset($settings['min_length']) ? $settings['min_length'] : 0,
     '#element_validate' => array('_element_validate_integer'),
   );
+  $form['max_length'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum selection count'),
+    '#description' => t('The maximum ammount of choices a user can choose before the UI turns off.'),
+    '#default_value' => isset($settings['max_length']) ? $settings['max_length'] : -1,
+  );
   $form['delimiter'] = array(
     '#type' => 'textfield',
     '#title' => t('Delimiter.'),
@@ -219,6 +225,7 @@ function autocomplete_deluxe_field_widget_form(&$form, &$form_state, $field, $in
     '#min_length' => isset($instance['widget']['settings']['min_length']) ? $instance['widget']['settings']['min_length'] : 0,
     '#use_synonyms' =>isset($instance['widget']['settings']['use_synonyms']) ? $instance['widget']['settings']['use_synonyms'] : 0,
     '#delimiter' =>isset($instance['widget']['settings']['delimiter']) ? $instance['widget']['settings']['delimiter'] : '',
+    '#max_length' => isset($instance['widget']['settings']['max_length']) ? $instance['widget']['settings']['max_length'] : -1,
   );
 
   $multiple = $field['cardinality'] > 1 || $field['cardinality'] == FIELD_CARDINALITY_UNLIMITED ? TRUE : FALSE;
@@ -276,6 +283,7 @@ function autocomplete_deluxe_element_process($element) {
     'min_length' => isset($element['#min_length']) ? $element['#min_length'] : 0,
     'use_synonyms' => isset($element['#use_synonyms']) ? $element['#use_synonyms'] : 0,
     'delimiter' => isset($element['#delimiter']) ? $element['#delimiter'] : '',
+    'max_length' => isset($element['#max_length']) ? $element['#max_length'] : -1,
   );
 
   if (isset($element['#autocomplete_deluxe_path'])) {
