@@ -141,7 +141,7 @@
     }
 
 
-    this.items = {};
+    this.items = new Array();
 
     var self = this;
     var parent = this.jqObject.parent();
@@ -273,7 +273,7 @@
   };
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype = new Drupal.autocomplete_deluxe.Widget();
-  Drupal.autocomplete_deluxe.MultipleWidget.prototype.items = new Object();
+  Drupal.autocomplete_deluxe.MultipleWidget.prototype.items = new Array();
 
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype.acceptTerm = function(term) {
@@ -308,7 +308,10 @@
     var escapedValue = Drupal.autocomplete_deluxe.escapeRegex( this.item.value );
     var regex = new RegExp('()*""' + escapedValue + '""|' + escapedValue + '()*', 'gi');
     this.widget.valueForm.val(values.replace(regex, ''));
-    delete this.widget.items[this.value];
+    var findIndex = this.wiget.items.indexOf(this.value);
+    delete this.widget.items[findIndex];
+    var jqObject = this.jqObject;
+    jqObject.show();
   };
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype.setup = function(settings) {
@@ -342,38 +345,26 @@
         };
         var item = new Drupal.autocomplete_deluxe.MultipleWidget.Item(self, item);
         item.element.insertBefore(jqObject);
-        items[item.value] = item;
+        items.push(item);
       }
     }
 
     jqObject.addClass('autocomplete-deluxe-multiple');
     parent.addClass('autocomplete-deluxe-multiple');
 
-    this.countItems = function(obj) {
-      var count = 0;
-
-      for(var prop in obj) {
-        if (obj.hasOwnProperty(prop)) {
-          count++;
-        }
-      }
-      return count;
-    };
-
     // Adds a value to the list.
     this.addValue = function(ui_item) {
       console.log(settings.max_length);
-      if (settings.max_length === -1 || self.countItems(items) <= settings.max_length) {
+      if (settings.max_length === -1 || items.length < settings.max_length) {
         var item = new Drupal.autocomplete_deluxe.MultipleWidget.Item(self, ui_item);
         item.element.insertBefore(jqObject);
-        items[ui_item.value] = item;
+        items.push(item);
         var new_value = ' ' + self.wrapper + ui_item.value + self.wrapper;
         var values = value_input.val();
         value_input.val(values + new_value);
         jqObject.val('');
-        console.log(self.countItems(items));
       } else {
-        jqObject.remove();
+        jqObject.hide();
       }
     };
 
