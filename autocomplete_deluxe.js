@@ -310,8 +310,6 @@
     this.widget.valueForm.val(values.replace(regex, ''));
     var findIndex = this.wiget.items.indexOf(this.value);
     delete this.widget.items[findIndex];
-    var jqObject = this.jqObject;
-    jqObject.show();
   };
 
   Drupal.autocomplete_deluxe.MultipleWidget.prototype.setup = function(settings) {
@@ -354,18 +352,13 @@
 
     // Adds a value to the list.
     this.addValue = function(ui_item) {
-      console.log(settings.max_length);
-      if (settings.max_length === -1 || items.length < settings.max_length) {
-        var item = new Drupal.autocomplete_deluxe.MultipleWidget.Item(self, ui_item);
-        item.element.insertBefore(jqObject);
-        items.push(item);
-        var new_value = ' ' + self.wrapper + ui_item.value + self.wrapper;
-        var values = value_input.val();
-        value_input.val(values + new_value);
-        jqObject.val('');
-      } else {
-        jqObject.hide();
-      }
+      var item = new Drupal.autocomplete_deluxe.MultipleWidget.Item(self, ui_item);
+      item.element.insertBefore(jqObject);
+      items.push(item);
+      var new_value = ' ' + self.wrapper + ui_item.value + self.wrapper;
+      var values = value_input.val();
+      value_input.val(values + new_value);
+      jqObject.val('');
     };
 
     parent.mouseup(function() {
